@@ -30,7 +30,7 @@ const addBookToDB = async (title)=>{
 const removeBookFromDB = async (id) =>{
     const ourBook = await Books.findById(id);
     if(!ourBook){
-        return "no book exists";
+        throw new Error("no book exists");
     }
     await Books.findByIdAndDelete(id);
     return "delete successful";
@@ -45,7 +45,7 @@ const removeAllBooksFromDB = async () => {
 const getBookDetails = async (id) => {
     const book = await Books.findById(id);
     if(!book){
-        return "no book exists";
+        throw new Error("no book exists")
     }
     return book;
 }
@@ -57,6 +57,11 @@ const getAllBooks = async () =>{
 
 const addCommentToBook = (id, comment) => {
     const ourBook = await Books.findById(id);
+
+    if(!ourBook){
+        throw new Error('no book exists');
+    }
+
     ourBook.comments.push(comment);
     await ourBook.save();
     return await getBookDetails(id);
