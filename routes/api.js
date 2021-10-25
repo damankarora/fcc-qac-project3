@@ -15,10 +15,11 @@ module.exports = function (app) {
     .get(function (req, res){
       //response will be array of book objects
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
-
-      DBdriver.getBookDetails().then((data)=>{
+      console.log("They demanded all the books")
+      DBdriver.getAllBooks().then((data)=>{
         res.json(data);
       }).catch((err)=>{
+        console.log(err);
         res.status(503).send();
       })
 
@@ -58,10 +59,7 @@ module.exports = function (app) {
       DBdriver.getBookDetails(bookid).then((data)=>{
         res.json(data);
       }).catch((err)=>{
-        if (err ==='no book exists'){
-          return res.send(err);
-        }
-        res.status(503).send();
+        res.send('no book exists')
       })
     })
     
@@ -77,10 +75,7 @@ module.exports = function (app) {
       DBdriver.addCommentToBook(bookid, comment).then((data)=>{
         return res.json(data);
       }).catch((err)=>{
-        if (err === 'no book exists'){
-          return res.send(err);
-        }
-        res.status(503).send();
+        return res.send('no book exists');        
       })
     })
     
@@ -91,10 +86,7 @@ module.exports = function (app) {
         return res.send(data);
       })
       .catch((err)=>{
-        if (err === "no book exists"){
-          return res.send(err);
-        }
-        res.status(503).send();
+        return res.send("no book exists");        
       })
     });
   

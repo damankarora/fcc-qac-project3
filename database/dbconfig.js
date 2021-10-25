@@ -55,7 +55,7 @@ const getAllBooks = async () =>{
     return ourBooks;
 }
 
-const addCommentToBook = (id, comment) => {
+const addCommentToBook =async (id, comment) => {
     const ourBook = await Books.findById(id);
 
     if(!ourBook){
@@ -63,6 +63,7 @@ const addCommentToBook = (id, comment) => {
     }
 
     ourBook.comments.push(comment);
+    ourBook.commentcount += 1;
     await ourBook.save();
     return await getBookDetails(id);
 }
